@@ -10,6 +10,7 @@ namespace EmployeeWageOOP
             //check employee attendence
             Employee employee = new Employee();
             employee.Attendence();
+            Console.ReadLine();
         }
     }
 }
