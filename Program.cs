@@ -9,7 +9,7 @@ namespace EmployeeWageOOP
             Console.WriteLine("Welcome to Employee wage Calculation ");
             //check employee attendence
             Employee employee = new Employee();
-            employee.Attendence();
+            employee.AttendenceCheck();
             Console.ReadLine();
         }
     }

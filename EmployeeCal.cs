@@ -4,40 +4,45 @@ using System.Text;
 
 namespace EmployeeWageOOP
 {
-    public abstract class AttendenceCheck
+    class Employee
     {
-        public abstract void Attendence();
-        public abstract void DailyWage(int attendence);
-    }
-    class Employee : AttendenceCheck
-    {
-        public override void Attendence()
-        {
-            //random number generation
-            Random rand = new Random();
-            int isPresent = rand.Next(2);
-            DailyWage(isPresent);
-        }
-        public override void DailyWage(int isPresent)
+        public void AttendenceCheck()
         {
             //constants
             const int WAGE_PER_HR = 20;
-            const int IS_FULL_TIME_HOURS = 8;
-            const int FULL_TIME = 1;
-            const int IS_ABSENT = 0;
+            const int IS_FULL_TIME = 8;
+            const int IS_PART_TIME = 4;
+
             //variables
             int dailyWage = 0;
-            if (isPresent == FULL_TIME)
+
+            //random number generation
+            Random rand = new Random();
+            int isPresent = rand.Next(0, 3);
+
+            switch (isPresent)
             {
-                dailyWage = WAGE_PER_HR * IS_FULL_TIME_HOURS;
-                Console.WriteLine($"Daily wage is {dailyWage}");
-            }
-            if (isPresent == IS_ABSENT)
-            {
-                Console.WriteLine($"Daily wage is {dailyWage}");
+                case 1:
+                    {
+                        dailyWage = WAGE_PER_HR * IS_FULL_TIME;
+                        Console.WriteLine($"Daily wage is {dailyWage}");
+                        break;
+                    }
+                case 2:
+                    {
+                        dailyWage = WAGE_PER_HR * IS_PART_TIME;
+                        Console.WriteLine($"Daily wage is {dailyWage}");
+                        break;
+                    }
+                default:
+                    {
+                        Console.WriteLine($"Daily wage is {dailyWage}");
+                        break;
+                    }
             }
 
         }
     }
+
 }
 
