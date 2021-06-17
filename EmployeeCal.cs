@@ -4,82 +4,83 @@ using System.Text;
 
 namespace EmployeeWageOOP
 {
-    public class Employee
+    interface IEmployeeWage
     {
-        private string company;
-        private int Wage_Per_Hr;
-        private int numWorkingDays;
-        private int MaxHrsPerMonth;
-        private int totalWage;
+        void ComputeEmpWage();
+        void AddCompanyEmpWage(string company, int wagePerHour, int numWorkingDays, int maxHoursPerMonth);
+    }
 
-        public Employee(string company,int Wage_Per_Hr,int numWorkingDays,int MaxHrsPerMonth)
+    public class EmpWageBuilderArray : IEmployeeWage
+    {
+        private int numOfCompany = 0;
+        private CompanyWage[] companyEmpWageArray;
+
+        public EmpWageBuilderArray()
         {
-            this.company = company;
-            this.Wage_Per_Hr = Wage_Per_Hr;
-            this.numWorkingDays = numWorkingDays;
-            this.MaxHrsPerMonth = MaxHrsPerMonth;
+            this.companyEmpWageArray = new CompanyWage[5];
         }
+
+        public void AddCompanyEmpWage(string company, int wagePerHour, int numWorkingDays, int maxHoursPerMonth)
+        {
+            companyEmpWageArray[this.numOfCompany] = new CompanyWage(company, wagePerHour, numWorkingDays, maxHoursPerMonth);
+            numOfCompany++;
+        }
+
         public void ComputeEmpWage()
+        {
+            for (int i = 0; i < numOfCompany; i++)
+            {
+                companyEmpWageArray[i].SetTotalEmpWage(this.ComputeEmpWage(this.companyEmpWageArray[i]));
+                Console.WriteLine(this.companyEmpWageArray[i].Result());
+            }
+        }
+
+        private int ComputeEmpWage(CompanyWage companyEmpWage)
         {
             //constants
             const int IS_FULL_TIME = 8;
             const int IS_PART_TIME = 4;
-            
-
-
-
+            const int FULL_TIME = 1;
+            const int PART_TIME = 2;
             //variables
             int dailyWage = 0;
-            int day ;
-            int isPresent;
+            int days, isPresent;
+            // int totalWage = 0;
             int totalHours = 0;
-
             //random number generation
             Random rand = new Random();
-            for (day = 1; day <= this.numWorkingDays; day++)
+            //calculating for month
+            for (days = 1; days <= companyEmpWage.numWorkingDays; days++) // calculating for 20 working days
             {
                 isPresent = rand.Next(0, 3);
-
+                //using switch case
                 switch (isPresent)
                 {
-                    case 1:
+                    case FULL_TIME: // Employee is present full time
                         {
-                            Console.WriteLine("The employer is full time");
-                            dailyWage = this.Wage_Per_Hr * IS_FULL_TIME;
-                            Console.WriteLine($"Daily wage is {dailyWage}");
+                            dailyWage = companyEmpWage.wagePerHour * IS_FULL_TIME;
                             break;
                         }
-                    case 2:
+                    case PART_TIME: //employee is present for part time
                         {
-                            Console.WriteLine("The employer is Part time");
-                            dailyWage = this.Wage_Per_Hr * IS_PART_TIME;
-                            Console.WriteLine($"Daily wage is {dailyWage}");
+                            dailyWage = companyEmpWage.wagePerHour * IS_PART_TIME;
                             break;
                         }
-                    default:
+                    default: // employee is absent
                         {
                             dailyWage = isPresent;
                             break;
                         }
                 }
                 //checking total number of hours
-                totalHours += dailyWage / 20;
-                totalWage += dailyWage;
-                if (totalHours >= this.MaxHrsPerMonth)
+                totalHours += dailyWage / 20; //calculate total hours worked
+                companyEmpWage.totalWage += dailyWage; // calculating montly wage
+                if (totalHours >= companyEmpWage.maxHoursPerMonth) //maximum total hours 
                     break;
+                Console.WriteLine(" Day:" + days + " Emp Hrs : " + totalHours);
             }
-            Console.WriteLine();
-            Console.WriteLine($"Company Name :{this.company}");
-            Console.WriteLine($"No. of hours worked :{totalHours}");
-            Console.WriteLine($"Wage Per hour :{this.Wage_Per_Hr}");
-            Console.WriteLine($"Monthly wage :{this.totalWage}");
-
-            
-            }
-            public string Result()
-            {
-            return "Total Employee wage for Comapny : " + this.company + " is " + this.totalWage;
-            }
+            return totalHours * companyEmpWage.wagePerHour;
+        }
 
 
     }
