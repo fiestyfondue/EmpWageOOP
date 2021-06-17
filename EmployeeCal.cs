@@ -18,6 +18,7 @@ namespace EmployeeWageOOP
             int day = 0;
             int isPresent;
             int totalWage = 0;
+            int totalHours = 0;
 
             //random number generation
             Random rand = new Random();
@@ -45,9 +46,14 @@ namespace EmployeeWageOOP
                             break;
                         }
                 }
-
+                //checking total number of hours
+                totalHours += dailyWage / 20;
                 totalWage += dailyWage;
-                Console.WriteLine($"Montly wage is {totalWage}");
+                if (totalHours >= 100)
+                {
+                    break;
+                }
+                Console.WriteLine($"Montly wage is {totalWage} and working hours is {totalHours}");
             }
 
         }
