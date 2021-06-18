@@ -4,7 +4,7 @@ using System.Text;
 
 namespace EmployeeWageOOP
 {
-    class CompanyWage
+    class CompanyEmpWage
     {
         //properties 
         public string company;
@@ -14,7 +14,7 @@ namespace EmployeeWageOOP
         public int totalWage;
 
 
-        public CompanyWage(string company, int wagePerHour, int numWorkingDays, int maxHoursPerMonth)
+        public CompanyEmpWage(string company, int wagePerHour, int numWorkingDays, int maxHoursPerMonth)
         {
             //Constructor
             this.company = company;

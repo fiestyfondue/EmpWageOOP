@@ -11,31 +11,37 @@ namespace EmployeeWageOOP
     }
 
     public class EmpWageBuilderArray : IEmployeeWage
-    {
+    {/// <summary>
+     /// storing company employee wage in a list instead of array
+     /// </summary>
         private int numOfCompany = 0;
-        private CompanyWage[] companyEmpWageArray;
+        private LinkedList<CompanyEmpWage> companyEmpWageList;
 
         public EmpWageBuilderArray()
         {
-            this.companyEmpWageArray = new CompanyWage[5];
+            //initilizing linked list
+            this.companyEmpWageList = new LinkedList<CompanyEmpWage>();
         }
 
         public void AddCompanyEmpWage(string company, int wagePerHour, int numWorkingDays, int maxHoursPerMonth)
         {
-            companyEmpWageArray[this.numOfCompany] = new CompanyWage(company, wagePerHour, numWorkingDays, maxHoursPerMonth);
-            numOfCompany++;
+            //calling Companywage arguments with object and adding to list
+            CompanyEmpWage companyEmpWage = new CompanyEmpWage(company, wagePerHour, numWorkingDays, maxHoursPerMonth);
+            this.companyEmpWageList.AddLast(companyEmpWage);
         }
 
         public void ComputeEmpWage()
         {
-            for (int i = 0; i < numOfCompany; i++)
+            //computing emp wage and adding it to total emp wage
+            //and displaying result
+            foreach (CompanyEmpWage companyEmpWage in this.companyEmpWageList)
             {
-                companyEmpWageArray[i].SetTotalEmpWage(this.ComputeEmpWage(this.companyEmpWageArray[i]));
-                Console.WriteLine(this.companyEmpWageArray[i].Result());
+                companyEmpWage.SetTotalEmpWage(this.ComputeEmpWage(companyEmpWage));
+                Console.WriteLine(companyEmpWage.Result());
             }
         }
 
-        private int ComputeEmpWage(CompanyWage companyEmpWage)
+        private int ComputeEmpWage(CompanyEmpWage companyEmpWage)
         {
             //constants
             const int IS_FULL_TIME = 8;
@@ -77,7 +83,7 @@ namespace EmployeeWageOOP
                 companyEmpWage.totalWage += dailyWage; // calculating montly wage
                 if (totalHours >= companyEmpWage.maxHoursPerMonth) //maximum total hours 
                     break;
-                Console.WriteLine(" Day:" + days + " Emp Hrs : " + totalHours);
+                Console.WriteLine(" Day#: " + days + " Emp Hrs : " + totalHours);
             }
             return totalHours * companyEmpWage.wagePerHour;
         }
